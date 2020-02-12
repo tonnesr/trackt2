@@ -1,24 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import './App.scss';
+import Search, { ISearchResult } from './components/Search/Search';
+import List, { IListItem } from './components/List/List';
 
-const App = () => {
+const App: React.FunctionComponent = () => {
+  const [ results, setResults ] = useState(undefined as ISearchResult);
+  
+  let items: IListItem[] = [];
+  if (results && results.response && results.response.results) {
+    items = results.response.results.map((item: any): IListItem => {
+      if (item) return { id: item.id, title: item.title, overview: item.overview, releaseDate: item.release_date };
+      return null;
+    });
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Search onResults={(results): void => setResults(results) } />
+      <List items={items} />
     </div>
   );
 }

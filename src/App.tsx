@@ -7,8 +7,8 @@ const App: React.FunctionComponent = () => {
   const [ results, setResults ] = useState(undefined as ISearchResult);
   
   let items: IListItem[] = [];
-  if (results && results.response && results.response.results) {
-    items = results.response.results.map((item: any): IListItem => {
+  if (results && results.data && results.data.items) {
+    items = results.data.items.map((item: any): IListItem => {
       if (item) return { id: item.id, title: item.title, overview: item.overview, releaseDate: item.release_date };
       return null;
     });

@@ -5,11 +5,11 @@ import MovieDBClient from '../../functions/helpers/MovieDBHelper';
 export interface ISearchResult {
   type: string;
   query: string;
-  response: {
+  data: {
     page?: number;
     total_results?: number;
     total_pages?: number;
-    results?: {}[];
+    items?: any[];
   };
 }
 
@@ -25,14 +25,15 @@ export const Search: React.FunctionComponent<ISearchProps> = (props: ISearchProp
   const getResults = async (event: any): Promise<any> => {
     event.preventDefault();
 
-    let res: ISearchResult = { type: 'none', query: '', response: {} };
+    let res: ISearchResult = { type: 'none', query: '', data: {} };
 
+    // TODO process response into a result interface.
     switch(type) {
       case 'tv': 
       case 'movie':
         const client = new MovieDBClient();
         const response = await client.searchMedia(type, query, 1);
-        res = { type, query, response };
+        res = { type, query, data: response };
         break;
       case 'game': 
       case 'anime': //case 'people':

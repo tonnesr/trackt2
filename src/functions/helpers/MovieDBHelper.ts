@@ -7,6 +7,7 @@ export default class MovieDBClient extends HelperBase {
     super();
     
     this.helperBase = new HelperBase();
+
     if (process.env.REACT_APP_MOVIEDB_API_BEARER_KEY) {
       this.helperBase.headers.append('Authorization', `Bearer ${process.env.REACT_APP_MOVIEDB_API_BEARER_KEY}`);
     } else {

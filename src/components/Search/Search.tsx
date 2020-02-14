@@ -9,7 +9,7 @@ export interface ISearchResult {
     page?: number;
     total_results?: number;
     total_pages?: number;
-    items?: any[];
+    results?: any[];
   };
 }
 
@@ -24,24 +24,7 @@ export const Search: React.FunctionComponent<ISearchProps> = (props: ISearchProp
   
   const getResults = async (event: any): Promise<any> => {
     event.preventDefault();
-
-    let res: ISearchResult = { type: 'none', query: '', data: {} };
-
-    // TODO process response into a result interface.
-    switch(type) {
-      case 'tv': 
-      case 'movie':
-        const client = new MovieDBClient();
-        const response = await client.searchMedia(type, query, 1);
-        res = { type, query, data: response };
-        break;
-      case 'game': 
-      case 'anime': //case 'people':
-      default: 
-        console.error(`${type} type not yet supported`); 
-        break;
-    }
-
+    let res = await onSearch(query, type);
     props.onResults(res);
   }
 
@@ -58,6 +41,27 @@ export const Search: React.FunctionComponent<ISearchProps> = (props: ISearchProp
       </select>
     </div>
   );
+}
+
+async function onSearch(query: string, type: string): Promise<ISearchResult> {
+  let client; 
+  let data;
+  
+  switch(type) {
+    case 'movie':
+    case 'tv':
+      client = new MovieDBClient();
+      data = await client.searchMedia(type, query, 1);
+      break;
+    case 'game':
+    case 'anime':
+      console.log(`Game and anime search is not yet supported.`);
+      break;
+    default:
+      console.error(`Type search for ${type} is not supported.`);
+      break;
+  }
+  return { type, query, data };
 }
 
 export default Search;

@@ -16,7 +16,7 @@ export const List: React.FunctionComponent<IListProps> = (props: IListProps) => 
   const [ items, setItems ] = useState(new Array<IListItem>());
   const [ sorted, setSorted ] = useState(false);
   useEffect(() => { setItems(props.items); }, [props.items]);
-  useEffect(() => { 
+  useEffect(() => {
     if (items) {
       if (!sorted) {
         setItems(props.items) 
@@ -26,36 +26,42 @@ export const List: React.FunctionComponent<IListProps> = (props: IListProps) => 
     }
   }, [sorted]); // TODO Warning from react (useReducer)
 
+  // FIXME some list is missing unique keys. Browsers return warnings.
+
   return (
     <div className='ListComponent'>
-      <button onClick={() => { setSorted(prevSorted => !prevSorted) }}>Sort</button>
-      <table>
-        <tbody className='ListItemContainer'>
-          {items && renderTable(items)}
-        </tbody>
-      </table>
+      {items && (
+        <>
+          <button onClick={() => { setSorted(prevSorted => !prevSorted) }}>Sort</button>
+          <table>
+            <tbody className='ListItemContainer'>
+              {renderTable(items)}
+            </tbody>
+          </table>
+        </>
+      )}
     </div>
   );
 }
 
-function renderTable(items: IListItem[]){
+function renderTable(items: IListItem[]): JSX.Element {
   if (items.length > 0) {
     const tableHeaders: string[] = Object.keys(items[0]);
     const tableContent: JSX.Element[] = items.map((item: IListItem) => { 
       return (
         <tr className='ListItemRow' key={item.id}>
-          <td className='ListItemId'>{item.id}</td>
-          <td className='ListItemTitle'>{item.title}</td>
-          <td className='ListItemOverview' title={item.overview}>overview</td>
-          <td className='ListItemReleaseDate'>{item.releaseDate}</td>
+          {tableHeaders.map((key: string): JSX.Element => {
+            const currItem: any = item[key];
+            return <td className={`ListItem${currItem}`}>{currItem}</td>
+          })}
         </tr>
       )
     });
 
-    return ( // TODO sorting by x
+    return (
       <>
         <tr>
-          {tableHeaders.map((item, index) => { return <th key={index} onClick={() => console.log('sorting by', item)}>{item.toUpperCase()}</th> })}
+          {tableHeaders.map((key: string, index: number) => { return <th key={index} onClick={() => console.log('sorting by', key)}>{key.toUpperCase()}</th> })}
         </tr>
         {tableContent}
       </>

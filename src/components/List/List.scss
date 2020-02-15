@@ -1,5 +1,24 @@
 .ListComponent {
-  >.ListItem {
-    border: 1px solid black;
+  .ListItemContainer {
+    border-collapse: collapse;
+
+    .ListItemRow {
+      border: 1px solid black;
+
+      .ListItemValue {
+        padding: 10px;
+      }
+    }
+
+    .ListItemColumnHeader {
+      color: white;
+      background-color: gray;
+      border: 1px solid black;
+      cursor: pointer;
+      
+      .ListItemColumnHeaderValue {
+        padding: 10px;
+      }
+    }
   }
 }

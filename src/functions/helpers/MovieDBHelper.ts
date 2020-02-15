@@ -19,7 +19,7 @@ export default class MovieDBClient extends HelperBase {
     return await (await fetch(`https://api.themoviedb.org/3/${type}/${id}`, { headers: this.helperBase.headers, method: 'GET' })).json();
   }
 
-  public async searchMedia(type: string, query: string, page: number) {
+  public async search(type: string, query: string, page: number) {
     return await (await fetch(`https://api.themoviedb.org/3/search/${type}?&query=${query}&page=${page}`, { headers: this.helperBase.headers, method: 'GET' })).json();
   }
 

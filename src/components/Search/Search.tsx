@@ -24,16 +24,15 @@ export const Search: React.FunctionComponent<ISearchProps> = (props: ISearchProp
   
   const getResults = async (event: any): Promise<any> => {
     event.preventDefault();
-    let res = await onSearch(query, type);
-    props.onResults(res);
-  }
+    props.onResults(await onSearch(query, type));
+  };
 
   return (
     <div className='SearchComponent'>
-      <form onSubmit={(event) => { getResults(event) }}>
-        <input type='text' onChange={(event: any) => { setQuery(event.target.value) }} />
+      <form onSubmit={(event) => { getResults(event); }}>
+        <input type='text' onChange={(event: any) => { setQuery(event.target.value); }} />
       </form>
-      <select value={type} onChange={(event) => { setType(event.target.value) }}>
+      <select value={type} onChange={(event) => { setType(event.target.value); }}>
         <option value='movie'>Movie</option>
         <option value='tv'>Tv</option>
         <option value='game'>Game</option>
@@ -41,7 +40,7 @@ export const Search: React.FunctionComponent<ISearchProps> = (props: ISearchProp
       </select>
     </div>
   );
-}
+};
 
 async function onSearch(query: string, type: string): Promise<ISearchResult> {
   let client; 
@@ -51,7 +50,7 @@ async function onSearch(query: string, type: string): Promise<ISearchResult> {
     case 'movie':
     case 'tv':
       client = new MovieDBClient();
-      data = await client.searchMedia(type, query, 1);
+      data = await client.search(type, query, 1);
       break;
     case 'game':
     case 'anime':

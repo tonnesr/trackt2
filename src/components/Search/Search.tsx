@@ -43,8 +43,8 @@ export const Search: React.FunctionComponent<ISearchProps> = (props: ISearchProp
 };
 
 async function onSearch(query: string, type: string): Promise<ISearchResult> {
-  let client; 
-  let data;
+  let client: MovieDBClient; 
+  let data: any;
   
   switch(type) {
     case 'movie':

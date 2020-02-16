@@ -3,6 +3,8 @@ import './App.scss';
 import Search, { ISearchResult } from './components/Search/Search';
 import SortableList from './components/Lists/SortableList/SortableList';
 import { IListItem } from './components/Lists/ListItem/ListItem';
+import { getListItem } from '../src/components/Lists/functions/Lists';
+import { IListColumn } from './components/Lists/interfaces/Lists';
 
 const App: React.FunctionComponent = () => {
   const [ results, setResults ] = useState(undefined as ISearchResult);
@@ -10,14 +12,21 @@ const App: React.FunctionComponent = () => {
   let items: IListItem[] = new Array<IListItem>();
   if (results?.data?.results?.length > 0) {
     items = results.data.results.map((item: any): IListItem => {
-      return { mediaType: results.type, id: item.id, title: item.title, releaseDate: item.release_date };
+      return getListItem(item, results.type);
+    });
+  }
+
+  let keys: IListColumn[] = new Array<IListColumn>();
+  if (items?.length > 0) {
+    keys = Object.keys(items[0]).map((key: string): IListColumn => {
+      return { field: key, width: (100 / keys.length) };
     });
   }
 
   return (
     <div className="App">
       <Search onResults={(r: ISearchResult): void => setResults(r) } />
-      <SortableList items={items} />
+      <SortableList columns={keys} label='Sort by' showExternalLabel={false} items={items} />
     </div>
   );
 };

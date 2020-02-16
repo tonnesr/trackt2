@@ -1,12 +1,13 @@
 import React from 'react';
 import { ListItem, IListItem } from '../../ListItem/ListItem';
+import './ListSort.scss';
 
 interface ISortProps {
   items: IListItem[];
   sortBy: string;
 }
 
-export const Sort: React.FunctionComponent<ISortProps> = (props: ISortProps) => {
+export const ListSort: React.FunctionComponent<ISortProps> = (props: ISortProps) => {
   const { items, sortBy } = props;
 
   const sortedItems: IListItem[] = items.sort((a, b): number => {
@@ -31,4 +32,4 @@ export const Sort: React.FunctionComponent<ISortProps> = (props: ISortProps) => 
   );
 };
 
-export default Sort;
+export default ListSort;

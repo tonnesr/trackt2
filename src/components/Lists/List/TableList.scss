@@ -1,0 +1,29 @@
+.TableListComponent {
+  .TableListItemContainer {
+    border-collapse: collapse;
+
+    .TableListItemRow {
+      border: 1px solid black;
+
+      .TableListItemValue {
+        padding: 10px;
+      }
+      
+      &:nth-of-type(even) {
+        background-color: rgb(233, 233, 233);
+      }
+    }
+
+    .TableListItemColumnHeader {
+      color: white;
+      background-color: gray;
+      border: 1px solid black;
+      cursor: pointer;
+      text-align: left;
+      
+      .TableListItemColumnHeaderValue {
+        padding: 10px;
+      }
+    }
+  }
+}

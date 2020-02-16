@@ -1,37 +1,23 @@
 import React, { useState } from 'react';
 import './App.scss';
 import Search, { ISearchResult } from './components/Search/Search';
-import List, { IListItem } from './components/List/List';
+import SortableList from './components/Lists/SortableList/SortableList';
+import { IListItem } from './components/Lists/ListItem/ListItem';
 
 const App: React.FunctionComponent = () => {
   const [ results, setResults ] = useState(undefined as ISearchResult);
 
-  let items: IListItem[] = [];
+  let items: IListItem[] = new Array<IListItem>();
   if (results?.data?.results?.length > 0) {
     items = results.data.results.map((item: any): IListItem => {
-      let itemObject: IListItem = { id: -1, title: '', /*overview: '',*/ releaseDate: '' };
-      
-      // TODO create another place to translate stuff
-      switch(results.type) {
-        case 'movie': 
-          itemObject = { id: item.id, title: item.title, /*overview: item.overview,*/ releaseDate: item.release_date }; 
-          break;
-        case 'tv': 
-          itemObject = { id: item.id, title: item.name, /*overview: item.overview,*/ releaseDate: item.first_air_date }; 
-          break;
-        // case 'game': itemObject = {}; break;
-        // case 'anime': itemObject = {}; break;
-        default: console.error(`Type ${results.type} is not supported.`); break;
-      }
-      
-      return itemObject;
+      return { mediaType: results.type, id: item.id, title: item.title, releaseDate: item.release_date };
     });
   }
 
   return (
     <div className="App">
       <Search onResults={(r: ISearchResult): void => setResults(r) } />
-      <List items={items} />
+      <SortableList items={items} />
     </div>
   );
 };

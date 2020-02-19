@@ -1,22 +1,25 @@
 import React from 'react';
-import { ListItem, IListItem } from '../../ListItem/ListItem';
+import { ListItem } from '../../ListItem/ListItem';
 import './ListSort.scss';
+import { IListColumn, IListItem } from '../../interfaces/Lists';
 
 interface ISortProps {
   items: IListItem[];
-  sortBy: string;
+  sortBy: IListColumn;
+  columns: IListColumn[];
 }
 
 export const ListSort: React.FunctionComponent<ISortProps> = (props: ISortProps) => {
-  const { items, sortBy } = props;
+  const { items, sortBy, columns } = props;
+  const sortByField: string = sortBy?.field;
 
   const sortedItems: IListItem[] = items.sort((a, b): number => {
     if (a && b) {
-      switch(typeof a[sortBy]) {
+      switch(typeof a[sortByField]) {
         case 'number':
-          return a[sortBy] > b[sortBy] ? 1 : -1;
+          return a[sortByField] > b[sortByField] ? 1 : -1;
         default:
-          return (`${a[sortBy]}`).localeCompare(`${b[sortBy]}`);
+          return (`${a[sortByField]}`).localeCompare(`${b[sortByField]}`);
       }
     } else {
       return 0;
@@ -26,7 +29,7 @@ export const ListSort: React.FunctionComponent<ISortProps> = (props: ISortProps)
   return (
     <>
       {sortedItems.map((item: IListItem, index: number) => { 
-        return <ListItem key={index} {...item} />; 
+        return <ListItem key={index} values={item} columns={columns} />; 
       })}
     </>
   );

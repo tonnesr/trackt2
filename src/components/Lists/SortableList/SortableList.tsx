@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './SortableList.scss';
-import ListItem, { IListItem } from '../ListItem/ListItem';
+import ListItem from '../ListItem/ListItem';
 import ListSort from './ListSort/ListSort';
-import { IListColumn } from '../interfaces/Lists';
+import { IListColumn, IListItem } from '../interfaces/Lists';
 
 export interface ISortableListProps {
   items: IListItem[];
@@ -11,44 +11,42 @@ export interface ISortableListProps {
   columns?: IListColumn[];
 }
 
-// TODO Use Keys from props.columns!
 export const SortableList: React.FunctionComponent<ISortableListProps> = (props: ISortableListProps) => {
   const [ items, setItems ] = useState(new Array<any>());
-  const [ sortBy, setSortBy ] = useState(props.label);
+  const [ sortBy, setSortBy ] = useState({ field: props.label, show: true, width: 25 } as IListColumn);
   useEffect(() => { setItems(props.items); }, [props.items]);
 
-  const keys: string[] = props?.columns?.length > 0 ? props?.columns?.map((key: IListColumn) => { 
-    return key.field; 
-  }) : [];
-
-  console.log(keys);
+  const columns: IListColumn[] = props?.columns?.length > 0 ? props?.columns : Object.keys(items).map((key: string): IListColumn => {
+    // FIXME broke column width - looks horrible, after adding this part v?
+    return { field: key, width: 100 / props.columns.length, show: true };
+  });
 
   const hideLabel: boolean = props.showExternalLabel ? props.showExternalLabel : false;
   const label: string = props.label ? props.label : '';
   
-  // TODO Use Keys from props.columns!
   return (
     <div className='SortableListComponent'>
-      {keys?.length > 0 && (
+      {columns?.length > 0 && (
         <>
           {(hideLabel && label) && <label>{label}</label>}
-          <select 
+          <select
             id='SortableListComponentSortDropdown'
-            onChange={(event: any) => setSortBy(event.target.value)} 
-            value={sortBy}
+            onChange={(event: any) => setSortBy({ field: event.target.value, show: true, width: 25 })} 
+            value={sortBy.field}
           >
             {label && <option disabled value={label}>{label}</option>}
-            {keys.map((key: string, index: number) => { 
-              return <option key={index} value={key}>{key}</option>; 
+            {columns.map((column: IListColumn, index: number) => {
+              if (column.show) return <option key={index} value={column.field}>{column.field}</option>; 
+              return null;
             })}
           </select>
         </>
       )}
-      {sortBy !== label ? (
-        <ListSort items={items} sortBy={sortBy} />
+      {sortBy.field !== label ? (
+        <ListSort items={items} sortBy={sortBy} columns={columns} />
       ) : (
         items?.length > 0 && items.map((item: IListItem, index: number) => { 
-          return <ListItem key={index} {...item} />; 
+          return <ListItem key={index} values={item} columns={columns} />; 
         })
       )}
     </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './TableList.scss';
-import { IListItem } from '../ListItem/ListItem';
+import { IListItem } from '../interfaces/Lists';
 
 export interface IListProps {
   items: IListItem[];

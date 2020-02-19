@@ -1,4 +1,4 @@
-import { IListItem } from "../ListItem/ListItem";
+import { IListItem } from "../interfaces/Lists";
 
 export function getListItem(item: any, type: string): IListItem {
   if (item) {

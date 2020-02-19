@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import './App.scss';
 import Search, { ISearchResult } from './components/Search/Search';
 import SortableList from './components/Lists/SortableList/SortableList';
-import { IListItem } from './components/Lists/ListItem/ListItem';
 import { getListItem } from '../src/components/Lists/functions/Lists';
-import { IListColumn } from './components/Lists/interfaces/Lists';
+import { IListColumn, IListItem } from './components/Lists/interfaces/Lists';
 
 const App: React.FunctionComponent = () => {
   const [ results, setResults ] = useState(undefined as ISearchResult);
@@ -19,7 +18,7 @@ const App: React.FunctionComponent = () => {
   let keys: IListColumn[] = new Array<IListColumn>();
   if (items?.length > 0) {
     keys = Object.keys(items[0]).map((key: string): IListColumn => {
-      return { field: key, width: (100 / keys.length) };
+      return { field: key, width: (100 / keys.length), show: true };
     });
   }
 

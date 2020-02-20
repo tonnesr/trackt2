@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './SortableList.scss';
 import ListItem from '../ListItem/ListItem';
-import ListSort from './ListSort/ListSort';
+import ListSort from '../ListSort/ListSort';
 import { IListColumn, IListItem } from '../interfaces/Lists';
 
 export interface ISortableListProps {

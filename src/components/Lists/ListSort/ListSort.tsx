@@ -1,7 +1,7 @@
 import React from 'react';
-import { ListItem } from '../../ListItem/ListItem';
+import { ListItem } from '../ListItem/ListItem';
 import './ListSort.scss';
-import { IListColumn, IListItem } from '../../interfaces/Lists';
+import { IListColumn, IListItem } from '../interfaces/Lists';
 
 interface ISortProps {
   items: IListItem[];
